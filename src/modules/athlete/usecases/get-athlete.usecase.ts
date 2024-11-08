@@ -1,6 +1,6 @@
 import { IAthlete } from "@/interfaces/athlete.interface";
 import { CacheService } from "@/services/cache/cache.service";
-import { Logger } from "@nestjs/common";
+import { Logger, NotFoundException } from "@nestjs/common";
 import { AthleteRepository } from "../athlete.repository";
 
 export class GetAthleteUsecase {
@@ -27,7 +27,7 @@ export class GetAthleteUsecase {
 
       if (!athlete) {
          this.logger.error(`Athlete with id: ${id} not found`);
-         throw new Error(`Athlete with id: ${id} not found`);
+         throw new NotFoundException(`Athlete with id: ${id} not found`);
       }
 
       await this.cache.setObjectInCache(`athlete:${id}`, athlete);

@@ -41,7 +41,7 @@ export class Reminder {
    @IsRequiredNumberColumn()
    public days_used: number
 
-   @ManyToOne(() => Gear, gear => gear.reminders, { eager: true })
+   @ManyToOne(() => Gear, gear => gear.reminders)
    @JoinColumn({ name: 'gear_id' })
-   public gear: Gear
+   public gear?: Gear
 }

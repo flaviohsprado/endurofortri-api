@@ -2,8 +2,9 @@ import { IsRequiredBooleanColumn } from "@/common/decorators/columns/isRequiredB
 import { IsRequiredColumn } from "@/common/decorators/columns/isRequiredColumn.decorator";
 import { IsRequiredNumberColumn } from "@/common/decorators/columns/isRequiredNumberColumn.decorator";
 import { IsRequiredStringColumn } from "@/common/decorators/columns/isRequiredStringColumn.decorator";
-import { GearType } from "@/enums/gear.enum";
+import { FieldId, GearType } from "@/enums/gear.enum";
 import { Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Athlete } from "../athlete/athlete.entity";
 import { Reminder } from "../reminder/reminder.entity";
 
 @Entity()
@@ -30,7 +31,7 @@ export class Gear {
    public use_elapsed_time: boolean
    @IsRequiredStringColumn()
    public retired: string
-   @IsRequiredStringColumn({ array: true })
+   @IsRequiredStringColumn('simple-array')
    public component_ids: string[]
    @IsRequiredBooleanColumn()
    public component: boolean
@@ -50,26 +51,30 @@ export class Gear {
       onDelete: 'CASCADE',
    })
    public activity_filters: ActivityFilter[]
+
+   @ManyToOne(() => Athlete, athlete => athlete.gears)
+   @JoinColumn({ name: 'athlete_id' })
+   public athlete: Athlete
 }
 
 @Entity()
-class ActivityFilter {
+export class ActivityFilter {
    @PrimaryGeneratedColumn('uuid')
    public id: string
    @IsRequiredStringColumn()
    public gear_id: string
-   @IsRequiredStringColumn()
-   public field_id: string
+   @IsRequiredStringColumn({ enum: FieldId })
+   public field_id: FieldId
    @IsRequiredStringColumn()
    public code: string
    @IsRequiredStringColumn()
    public operator: string
-   @IsRequiredColumn()
+   @IsRequiredColumn({ type: 'json', nullable: true })
    public value: object
    @IsRequiredBooleanColumn()
    public not: boolean
 
-   @ManyToOne(() => Gear, gear => gear.activity_filters, { eager: true })
+   @ManyToOne(() => Gear, gear => gear.activity_filters)
    @JoinColumn({ name: 'gear_id' })
    public gear: Gear
 }

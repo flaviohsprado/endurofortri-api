@@ -71,6 +71,7 @@
       "!**/src/config/**",
       "!**/src/entities/**",
       "!**/src/modules/**/*.module.ts",
+      "!**/src/modules/**/*.entity.ts",
       "!**/src/services/**/*.module.ts",
       "!**/src/modules/**/*.proxy.module.ts",
       "!**/src/modules/**/*.dto.ts",

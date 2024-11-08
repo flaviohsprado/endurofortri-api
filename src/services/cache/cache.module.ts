@@ -5,7 +5,7 @@ import { CacheService } from './cache.service';
 
 const redisHost = process.env.REDIS_HOST || 'localhost'
 const redisPort = process.env.REDIS_PORT || 6379;
-const timeToLive = 60 * 60 * 24;
+const timeToLive = Number(process.env.CACHE_TTL) || 60;
 
 @Module({
    imports: [

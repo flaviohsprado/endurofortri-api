@@ -6,8 +6,8 @@ import { IsRequiredNumber } from "@/common/decorators/validators/isRequiredNumbe
 import { IsRequiredString } from "@/common/decorators/validators/isRequiredString.decorator"
 
 export class CreateReminderDTO {
-   @IsRequiredString()
-   public gear_id: string
+   @IsOptionalString()
+   public gear_id?: string
    @IsRequiredString()
    public name: string
    @IsRequiredNumber()
@@ -39,44 +39,45 @@ export class CreateReminderDTO {
    @IsRequiredNumber()
    public days_used: number
 
-   constructor(props: CreateReminderDTO) {
+   constructor(props: CreateReminderDTO, gearId?: string) {
       Object.assign(this, props)
+      this.gear_id = gearId
    }
 }
 
 export class UpdateReminderDTO {
    @IsOptionalString()
-   public gear_id: string
+   public gear_id?: string
    @IsOptionalString()
-   public name: string
+   public name?: string
    @IsOptionalNumber()
-   public distance: number
+   public distance?: number
    @IsOptionalNumber()
-   public time: number
+   public time?: number
    @IsOptionalNumber()
-   public activities: number
+   public activities?: number
    @IsOptionalNumber()
-   public days: number
+   public days?: number
    @IsOptionalDate()
-   public last_reset: Date
+   public last_reset?: Date
    @IsOptionalNumber()
-   public starting_distance: number
+   public starting_distance?: number
    @IsOptionalNumber()
-   public starting_time: number
+   public starting_time?: number
    @IsOptionalNumber()
-   public starting_activities: number
+   public starting_activities?: number
    @IsOptionalDate()
-   public snoozed_until: Date
+   public snoozed_until?: Date
    @IsOptionalNumber()
-   public percent_used: number
+   public percent_used?: number
    @IsOptionalNumber()
-   public distance_used: number
+   public distance_used?: number
    @IsOptionalNumber()
-   public time_used: number
+   public time_used?: number
    @IsOptionalNumber()
-   public activities_used: number
+   public activities_used?: number
    @IsOptionalNumber()
-   public days_used: number
+   public days_used?: number
 
    constructor(props: CreateReminderDTO) {
       Object.assign(this, props)

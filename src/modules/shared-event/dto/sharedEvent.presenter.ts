@@ -49,7 +49,27 @@ export class SharedEventPresenter {
    public athlete: AthletePresenter
 
    constructor(props: SharedEventPresenter) {
-      Object.assign(this, props)
+      this.id = props.id
+      this.external_id = props.external_id
+      this.athlete_id = props.athlete_id
+      this.category = props.category
+      this.types = props.types
+      this.name = props.name
+      this.start_date_local = props.start_date_local
+      this.visibility = props.visibility
+      this.chat_id = props.chat_id
+      this.description = props.description
+      this.website = props.website
+      this.closing_date_local = props.closing_date_local
+      this.location = props.location
+      this.address = props.address
+      this.country = props.country
+      this.region = props.region
+      this.lat = props.lat
+      this.lon = props.lon
+      this.route_file = props.route_file
+      this.polyline = props.polyline
+      this.usage_count = props.usage_count
       this.athlete = new AthletePresenter(props.athlete)
    }
 }

@@ -5,7 +5,7 @@ import { PutApiResponse } from "@/common/decorators/requests/putApiResponse.deco
 import { Body, Controller, Inject, Param } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { UseCaseProxy } from "../usecase-proxy";
-import { CreateReminderDTO } from "./dto/reminder.dto";
+import { CreateReminderDTO, UpdateReminderDTO } from "./dto/reminder.dto";
 import { ReminderPresenter } from "./dto/reminder.presenter";
 import { ReminderModule } from "./reminder.module";
 import { CreateReminderUsecase } from "./usecases/create-reminder.usecase";
@@ -35,16 +35,20 @@ export class ReminderController {
       return reminder.map((reminder) => new ReminderPresenter(reminder));
    }
 
-   @PostApiResponse(ReminderPresenter)
-   public async createReminder(@Body() request: CreateReminderDTO): Promise<ReminderPresenter> {
-      const reminder = await this.createReminderUseCase.getInstance().execute(request);
+   @PostApiResponse(ReminderPresenter, '/:gearId')
+   public async createReminder(
+      @Param('gearId') gearId: string,
+      @Body() request: CreateReminderDTO
+   ): Promise<ReminderPresenter> {
+      const requestBody = new CreateReminderDTO(request, gearId);
+      const reminder = await this.createReminderUseCase.getInstance().execute(requestBody);
       return new ReminderPresenter(reminder);
    }
 
    @PutApiResponse(ReminderPresenter, '/:id')
    public async updateReminder(
       @Param('id') id: string,
-      @Body() request: CreateReminderDTO,
+      @Body() request: UpdateReminderDTO,
    ): Promise<ReminderPresenter> {
       const reminder = await this.updateReminderUseCase.getInstance().execute(id, request);
       return new ReminderPresenter(reminder);

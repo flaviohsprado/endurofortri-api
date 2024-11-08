@@ -16,10 +16,10 @@ export class UpdateAthleteUsecase {
    public async execute(id: string, request: UpdateAthleteDTO): Promise<IAthlete> {
       this.logger.log(`Updating athlete with name: ${request.name}`);
 
-      const createdAthlete = await this.repository.update(id, request);
+      const updatedAthlete = await this.repository.update(id, request);
 
       this.logger.log(`Athlete with name: ${request.name} updated`);
 
-      return createdAthlete;
+      return updatedAthlete;
    }
 }
