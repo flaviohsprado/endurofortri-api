@@ -19,31 +19,6 @@ export class EnvironmentConfigService {
       return this.configService.get<string>('ENVIRONMENT');
    }
 
-   /*   public getCloudUpload(): boolean {
-         return this.configService.get<boolean>('CLOUD_UPLOAD');
-      }
-   
-      //S3
-      public getBucketName(): string {
-         return this.configService.get<string>('AWS_S3_BUCKET');
-      }
-   
-      public getBucketRegion(): string {
-         return this.configService.get<string>('DEFAULT_REGION');
-      }
-   
-      public getBucketDefaultACL(): string {
-         return this.configService.get<string>('DEFAULT_FILES_ACL');
-      }
-   
-      public getBucketAccessKeyId(): string {
-         return this.configService.get<string>('AWS_ACCESS_KEY');
-      }
-   
-      public getBucketSecretAccessKey(): string {
-         return this.configService.get<string>('AWS_ACCESS_SECRET_KEY');
-      }*/
-
    //JWT
    public getJwtSecret(): string {
       return this.configService.get<string>('JWT_SECRET');

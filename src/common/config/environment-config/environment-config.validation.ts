@@ -19,9 +19,6 @@ class EnvironmentVariables {
    @IsEnum(Environment)
    public ENVIRONMENT: Environment;
 
-   @IsBoolean()
-   public CLOUD_UPLOAD: boolean;
-
    @IsString()
    public JWT_SECRET: string;
 
