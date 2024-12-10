@@ -8,6 +8,8 @@ import { ReminderController } from './modules/reminder/reminder.controller';
 import { ReminderModule } from './modules/reminder/reminder.module';
 import { SharedEventController } from './modules/shared-event/shared-event.controller';
 import { SharedEventModule } from './modules/shared-event/shared-event.module';
+import { ActivitiesModule } from './modules/activities/activities.module';
+import { ActivitiesController } from './modules/activities/activities.controller';
 
 @Module({
   imports: [
@@ -15,12 +17,14 @@ import { SharedEventModule } from './modules/shared-event/shared-event.module';
     SharedEventModule.register(),
     GearModule.register(),
     ReminderModule.register(),
+    ActivitiesModule.register(),
   ],
   controllers: [
     AthleteController,
     SharedEventController,
     GearController,
-    ReminderController
+    ReminderController,
+    ActivitiesController,
   ],
   providers: [
     {
@@ -29,4 +33,4 @@ import { SharedEventModule } from './modules/shared-event/shared-event.module';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

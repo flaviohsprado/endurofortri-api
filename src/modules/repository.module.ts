@@ -9,23 +9,34 @@ import { Reminder } from './reminder/reminder.entity';
 import { ReminderRepository } from './reminder/reminder.repository';
 import { SharedEvent } from './shared-event/shared-event.entity';
 import { SharedEventRepository } from './shared-event/shared-event.repository';
+import { ActivityRepository } from './activities/activities.repository';
+import { Activity } from './activities/activities.entity';
 
 @Module({
-   imports: [
-      TypeOrmConfigModule,
-      TypeOrmModule.forFeature([Athlete, SharedEvent, Reminder, ActivityFilter, Gear]),
-   ],
-   providers: [
-      AthleteRepository,
-      SharedEventRepository,
-      ReminderRepository,
-      GearRepository
-   ],
-   exports: [
-      AthleteRepository,
-      SharedEventRepository,
-      ReminderRepository,
-      GearRepository
-   ],
+  imports: [
+    TypeOrmConfigModule,
+    TypeOrmModule.forFeature([
+      Athlete,
+      SharedEvent,
+      Reminder,
+      ActivityFilter,
+      Gear,
+      Activity,
+    ]),
+  ],
+  providers: [
+    AthleteRepository,
+    SharedEventRepository,
+    ReminderRepository,
+    GearRepository,
+    ActivityRepository,
+  ],
+  exports: [
+    AthleteRepository,
+    SharedEventRepository,
+    ReminderRepository,
+    GearRepository,
+    ActivityRepository,
+  ],
 })
-export class RepositoriesModule { }
+export class RepositoriesModule {}
