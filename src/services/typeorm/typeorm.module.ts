@@ -8,7 +8,7 @@ export const getTypeOrmModuleOptions = (
 ): TypeOrmModuleOptions =>
   ({
     type: 'postgres',
-    url: 'postgresql://neondb_owner:FInygJ02aMPE@ep-bold-hall-a8gposrv.eastus2.azure.neon.tech/neondb?sslmode=require',
+    url: config.getDatabaseUrl(),
     entities: ['dist/**/*.entity{.ts,.js}'],
     synchronize: true, //config.getDatabaseSync(),
     ssl: config.getEnvironment() === 'production',
@@ -16,11 +16,11 @@ export const getTypeOrmModuleOptions = (
     extra:
       config.getEnvironment() === 'production'
         ? {
-            ssl: {
-              rejectUnauthorized: false,
-              require: true,
-            },
-          }
+          ssl: {
+            rejectUnauthorized: false,
+            require: true,
+          },
+        }
         : {},
   }) as TypeOrmModuleOptions;
 
@@ -33,4 +33,4 @@ export const getTypeOrmModuleOptions = (
     }),
   ],
 })
-export class TypeOrmConfigModule {}
+export class TypeOrmConfigModule { }

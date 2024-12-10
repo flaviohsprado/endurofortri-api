@@ -1,5 +1,4 @@
 import { FieldId, GearType } from "@/enums/gear.enum"
-import { ReminderPresenter } from "@/modules/reminder/dto/reminder.presenter"
 import { ApiProperty } from "@nestjs/swagger"
 
 export class ActivityFilterPresenter {
@@ -40,10 +39,6 @@ export class GearPresenter {
    public retired: string
    @ApiProperty()
    public component_ids: string[]
-   @ApiProperty({ type: [ReminderPresenter] })
-   public reminders: ReminderPresenter[]
-   @ApiProperty({ type: [ActivityFilterPresenter] })
-   public activity_filters: ActivityFilterPresenter[]
    @ApiProperty()
    public component: boolean
 
@@ -60,8 +55,6 @@ export class GearPresenter {
       this.use_elapsed_time = props.use_elapsed_time
       this.retired = props.retired
       this.component_ids = props.component_ids
-      this.reminders = props.reminders
-      this.activity_filters = props.activity_filters
       this.component = props.component
    }
 }

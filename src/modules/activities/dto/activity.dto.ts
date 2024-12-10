@@ -5,9 +5,8 @@ import { IsRequiredBoolean } from "@/common/decorators/validators/isRequiredBool
 import { IsRequiredNumber } from "@/common/decorators/validators/isRequiredNumber.decorator"
 import { IsRequiredString } from "@/common/decorators/validators/isRequiredString.decorator"
 import { FieldId, GearType } from "@/enums/gear.enum"
-import { CreateReminderDTO } from "@/modules/reminder/dto/reminder.dto"
 import { ApiProperty } from "@nestjs/swagger"
-import { IsArray, IsEmpty, IsEnum, IsNotEmpty, IsObject } from "class-validator"
+import { IsArray, IsEnum, IsNotEmpty, IsObject } from "class-validator"
 
 export class CreateActivityFilterDTO {
    @IsRequiredString()
@@ -54,16 +53,6 @@ export class CreateGearDTO {
    public component_ids: string[]
    @IsRequiredBoolean()
    public component: boolean
-   //@IsArray()   
-   //@IsObject({ each: true })
-   @IsEmpty()
-   @ApiProperty({ required: false, isArray: true })
-   public reminders?: CreateReminderDTO[]
-   //@IsArray()   
-   //@IsObject({ each: true })
-   @IsEmpty()
-   @ApiProperty({ required: false, isArray: true })
-   public activity_filters?: CreateActivityFilterDTO[]
 
    constructor(partial: Partial<CreateGearDTO>) {
       Object.assign(this, partial)
@@ -97,14 +86,6 @@ export class UpdateGearDTO {
    public component_ids?: string[]
    @IsOptionalBoolean()
    public component?: boolean
-   //@IsArray()   
-   //@IsObject({ each: true })
-   @ApiProperty({ required: false, isArray: true })
-   public reminders?: CreateReminderDTO[]
-   //@IsArray()   
-   //@IsObject({ each: true })
-   @ApiProperty({ required: false, isArray: true })
-   public activity_filters?: CreateActivityFilterDTO[]
 
    constructor(partial: Partial<UpdateGearDTO>) {
       Object.assign(this, partial)

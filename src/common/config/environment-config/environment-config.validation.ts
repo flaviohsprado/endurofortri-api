@@ -1,11 +1,10 @@
 import { Logger } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import {
-   IsBoolean,
    IsEnum,
    IsNumber,
    IsString,
-   validateSync,
+   validateSync
 } from 'class-validator';
 
 enum Environment {
@@ -26,28 +25,19 @@ class EnvironmentVariables {
    public JWT_EXPIRATION_TIME: string;
 
    @IsString()
-   public DATABASE_HOST: string;
-
-   @IsNumber()
-   public DATABASE_PORT: number;
-
-   @IsString()
-   public DATABASE_USER: string;
-
-   @IsString()
-   public DATABASE_PASSWORD: string;
-
-   @IsString()
-   public DATABASE_NAME: string;
-
-   @IsBoolean()
-   public DATABASE_SYNCHRONIZE: boolean;
+   public DATABASE_URL: string;
 
    @IsString()
    public REDIS_HOST: string;
 
    @IsNumber()
    public REDIS_PORT: number;
+
+   @IsString()
+   public STRAVA_CLIENT_SECRET: string;
+
+   @IsString()
+   public STRAVA_TOKEN: string;
 }
 
 export function validate(config: Record<string, unknown>) {
