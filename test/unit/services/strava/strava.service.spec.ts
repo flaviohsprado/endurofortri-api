@@ -46,7 +46,7 @@ describe('StravaService', () => {
 
    describe('getAthleteActivities', () => {
       const mockAccessToken = 'mock-access-token';
-      const mockActivities = [{ id: 1, name: 'Activity 1' }];
+      const mockActivities = [{ id: 1, name: 'Morning Run' }];
 
       it('should successfully fetch athlete activities', async () => {
          mockHttpService.axiosRef.get.mockResolvedValueOnce({
@@ -72,24 +72,72 @@ describe('StravaService', () => {
          );
       });
 
-      it('should throw HttpException when API request fails', async () => {
-         const errorMessage = 'API Error';
-         mockHttpService.axiosRef.get.mockRejectedValueOnce({
+      it('should throw HttpException when API call fails with response', async () => {
+         const errorResponse = {
             response: {
-               data: { message: errorMessage },
+               data: { message: 'API Error' },
                status: HttpStatus.BAD_REQUEST,
             },
-         });
+         };
+
+         mockHttpService.axiosRef.get.mockRejectedValueOnce(errorResponse);
+
+         //jest.spyOn(service, 'getAthleteActivities').mockRejectedValueOnce(errorResponse);
 
          await expect(service.getAthleteActivities(mockAccessToken)).rejects.toThrow(
-            new HttpException(errorMessage, HttpStatus.BAD_REQUEST),
+            new HttpException('API Error', HttpStatus.BAD_REQUEST),
+         );
+      });
+
+      it('should throw generic HttpException when API call fails without response', async () => {
+         // Mock the HTTP call to throw an error without response property
+         mockHttpService.axiosRef.get.mockRejectedValueOnce(new Error('Network error'));
+
+         await expect(service.getAthleteActivities(mockAccessToken)).rejects.toThrow(
+            new HttpException(
+               'Failed to fetch Strava activities',
+               HttpStatus.INTERNAL_SERVER_ERROR,
+            ),
+         );
+      });
+
+      it('should throw HttpException with default message when API fails with empty response message', async () => {
+         const errorResponse = {
+            response: {
+               data: {}, // No message property
+               status: HttpStatus.BAD_REQUEST,
+            },
+         };
+
+         mockHttpService.axiosRef.get.mockRejectedValueOnce(errorResponse);
+
+         await expect(service.getAthleteActivities(mockAccessToken)).rejects.toThrow(
+            new HttpException('Failed to fetch Strava activities', HttpStatus.BAD_REQUEST),
+         );
+      });
+
+      it('should throw HttpException with default status when API fails without status code', async () => {
+         const errorResponse = {
+            response: {
+               data: {}, // No message property
+               status: undefined, // No status code
+            },
+         };
+
+         mockHttpService.axiosRef.get.mockRejectedValueOnce(errorResponse);
+
+         await expect(service.getAthleteActivities(mockAccessToken)).rejects.toThrow(
+            new HttpException(
+               'Failed to fetch Strava activities',
+               HttpStatus.INTERNAL_SERVER_ERROR,
+            ),
          );
       });
    });
 
    describe('exchangeAuthorizationCode', () => {
       const mockCode = 'mock-auth-code';
-      const mockResponse = {
+      const mockTokenResponse = {
          access_token: 'mock-access-token',
          refresh_token: 'mock-refresh-token',
       };
@@ -106,12 +154,12 @@ describe('StravaService', () => {
 
       it('should successfully exchange authorization code', async () => {
          mockHttpService.axiosRef.post.mockResolvedValueOnce({
-            data: mockResponse,
+            data: mockTokenResponse,
          });
 
          const result = await service.exchangeAuthorizationCode(mockCode);
 
-         expect(result).toEqual(mockResponse);
+         expect(result).toEqual(mockTokenResponse);
          expect(mockHttpService.axiosRef.post).toHaveBeenCalledWith(
             'https://www.strava.com/api/v3/oauth/token',
             {
@@ -137,7 +185,7 @@ describe('StravaService', () => {
 
    describe('refreshToken', () => {
       const mockRefreshToken = 'mock-refresh-token';
-      const mockResponse = {
+      const mockTokenResponse = {
          access_token: 'new-access-token',
          refresh_token: 'new-refresh-token',
       };
@@ -154,12 +202,12 @@ describe('StravaService', () => {
 
       it('should successfully refresh token', async () => {
          mockHttpService.axiosRef.post.mockResolvedValueOnce({
-            data: mockResponse,
+            data: mockTokenResponse,
          });
 
          const result = await service.refreshToken(mockRefreshToken);
 
-         expect(result).toEqual(mockResponse);
+         expect(result).toEqual(mockTokenResponse);
          expect(mockHttpService.axiosRef.post).toHaveBeenCalledWith(
             'https://www.strava.com/api/v3/oauth/token',
             {
@@ -182,4 +230,4 @@ describe('StravaService', () => {
          );
       });
    });
-});
+}); 

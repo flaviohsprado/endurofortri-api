@@ -22,9 +22,9 @@ export class UpdateAthleteUsecase {
             statusCode: HttpStatus.FORBIDDEN,
          });
 
-      if (request.password) {
+      if (request.password)
          request.password = await this.bcryptService.createHash(request.password);
-      }
+
 
       this.logger.log(`Updating athlete with name: ${request.name}`);
 
