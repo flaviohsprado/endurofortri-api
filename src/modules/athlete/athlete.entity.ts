@@ -1,3 +1,5 @@
+import { IsOptionalNumberColumn } from "@/common/decorators/columns/isOptionalnumberColumn.decorator";
+import { IsOptionalStringColumn } from "@/common/decorators/columns/isOptionalStringColumn.decorator";
 import { IsRequiredStringColumn } from "@/common/decorators/columns/isRequiredStringColumn.decorator";
 import { Entity, PrimaryGeneratedColumn } from "typeorm";
 
@@ -8,21 +10,30 @@ export class Athlete {
    @IsRequiredStringColumn()
    public name: string
    @IsRequiredStringColumn()
-   public profile_medium: string
-   @IsRequiredStringColumn()
-   public city: string
-   @IsRequiredStringColumn()
-   public state: string
-   @IsRequiredStringColumn()
-   public country: string
-   @IsRequiredStringColumn()
-   public timezone: string
-   @IsRequiredStringColumn()
-   public sex: string
-   @IsRequiredStringColumn()
-   public bio: string
-   @IsRequiredStringColumn()
-   public website: string
-   @IsRequiredStringColumn()
    public email: string
+   @IsRequiredStringColumn()
+   public password: string
+   @IsOptionalStringColumn()
+   public profile_medium: string
+   @IsOptionalStringColumn()
+   public city: string
+   @IsOptionalStringColumn()
+   public state: string
+   @IsOptionalStringColumn()
+   public country: string
+   @IsOptionalStringColumn()
+   public timezone: string
+   @IsOptionalStringColumn()
+   public sex: string
+   @IsOptionalNumberColumn()
+   public weight: number
+   @IsOptionalNumberColumn()
+   public height: number
+   @IsOptionalStringColumn()
+   public bio: string
+   @IsOptionalStringColumn()
+   public website: string
+   @IsOptionalStringColumn()
+   public strava_access_token: string
 }
+

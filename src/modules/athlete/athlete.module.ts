@@ -1,6 +1,10 @@
 import { EnvironmentConfigModule } from "@/common/config/environment-config/environment-config.module";
+import { BcryptModule } from "@/services/bcrypt/bcrypt.module";
+import { BcryptService } from "@/services/bcrypt/bcrypt.service";
 import { CacheConfigModule } from "@/services/cache/cache.module";
 import { CacheService } from "@/services/cache/cache.service";
+import { JwtConfigModule } from "@/services/jwt/jwt.module";
+import { JwtTokenService } from "@/services/jwt/jwt.service";
 import { DynamicModule, Module } from "@nestjs/common";
 import { RepositoriesModule } from "../repository.module";
 import { UseCaseProxy } from "../usecase-proxy";
@@ -15,6 +19,8 @@ import { UpdateAthleteUsecase } from "./usecases/update-athlete.usecase";
       EnvironmentConfigModule,
       RepositoriesModule,
       CacheConfigModule,
+      BcryptModule,
+      JwtConfigModule,
    ],
 })
 export class AthleteModule {
@@ -39,23 +45,26 @@ export class AthleteModule {
                   ),
             },
             {
-               inject: [AthleteRepository],
+               inject: [AthleteRepository, BcryptService, JwtTokenService],
                provide: AthleteModule.CREATE_ATHLETE_USECASES_PROXY,
                useFactory: (
                   repository: AthleteRepository,
+                  bcryptService: BcryptService,
+                  jwtTokenService: JwtTokenService,
                ) =>
                   new UseCaseProxy(
-                     new CreateAthleteUsecase(repository),
+                     new CreateAthleteUsecase(repository, bcryptService, jwtTokenService),
                   ),
             },
             {
-               inject: [AthleteRepository],
+               inject: [AthleteRepository, BcryptService],
                provide: AthleteModule.UPDATE_ATHLETE_USECASES_PROXY,
                useFactory: (
                   repository: AthleteRepository,
+                  bcryptService: BcryptService,
                ) =>
                   new UseCaseProxy(
-                     new UpdateAthleteUsecase(repository),
+                     new UpdateAthleteUsecase(repository, bcryptService),
                   ),
             },
             {

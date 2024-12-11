@@ -11,6 +11,12 @@ export class AthleteRepository {
       private readonly repository: Repository<Athlete>,
    ) { }
 
+   public async findByKey(key: string, value: string): Promise<Athlete> {
+      return await this.repository.findOne({
+         where: { [key]: value },
+      });
+   }
+
    public async findById(id: string): Promise<Athlete> {
       return await this.repository.findOne({ where: { id } });
    }
@@ -33,5 +39,10 @@ export class AthleteRepository {
          this.repository.delete(id);
          return athlete;
       }
+   }
+
+   public async alreadyExists(key: string, value: string): Promise<boolean> {
+      const athlete = await this.repository.findOne({ where: { [key]: value } });
+      return !!athlete;
    }
 }

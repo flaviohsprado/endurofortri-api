@@ -1,7 +1,7 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { HttpService } from '@nestjs/axios';
 import { IStravaActivity } from '@/interfaces/strava.inferface';
+import { HttpService } from '@nestjs/axios';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class StravaService {
@@ -10,10 +10,10 @@ export class StravaService {
   constructor(
     private readonly configService: ConfigService,
     private readonly httpService: HttpService,
-  ) {}
+  ) { }
 
   async getAthleteActivities(
-    accessToken: string,
+    access_token: string,
     after?: number,
     before?: number,
     page: number = 1,
@@ -24,7 +24,7 @@ export class StravaService {
         `${this.stravaApiUrl}/athlete/activities`,
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${access_token}`,
           },
           params: {
             after,

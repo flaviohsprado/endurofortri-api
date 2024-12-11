@@ -1,7 +1,7 @@
-import { Injectable, Logger } from '@nestjs/common';
 import { CacheService } from '@/services/cache/cache.service';
-import { Activity } from '../activities.entity';
-import { ActivityRepository } from '../activities.repository';
+import { Injectable, Logger } from '@nestjs/common';
+import { Activity } from '../activity.entity';
+import { ActivityRepository } from '../activity.repository';
 
 @Injectable()
 export class GetActivityUsecase {

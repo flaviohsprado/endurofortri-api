@@ -1,5 +1,7 @@
 import { AthleteRepository } from '@/modules/athlete/athlete.repository';
+import { BcryptService } from '@/services/bcrypt/bcrypt.service';
 import { CacheService } from '@/services/cache/cache.service';
+import { JwtTokenService } from '@/services/jwt/jwt.service';
 import { createMock } from '@golevelup/ts-jest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AthleteController } from '../../../../src/modules/athlete/athlete.controller';
@@ -17,6 +19,8 @@ describe('AthleteController', () => {
    let athleteController: AthleteController;
    let athleteRepository: AthleteRepository;
    let cacheService: CacheService;
+   let bcryptService: BcryptService;
+   let jwtService: JwtTokenService;
    let getAthleteUsecase: GetAthleteUsecase;
    let createAthleteUsecase: CreateAthleteUsecase;
    let updateAthleteUsecase: UpdateAthleteUsecase;
@@ -40,12 +44,15 @@ describe('AthleteController', () => {
                provide: AthleteModule.CREATE_ATHLETE_USECASES_PROXY,
                useValue: new UseCaseProxy(new CreateAthleteUsecase(
                   athleteRepository,
+                  bcryptService,
+                  jwtService
                )),
             },
             {
                provide: AthleteModule.UPDATE_ATHLETE_USECASES_PROXY,
                useValue: new UseCaseProxy(new UpdateAthleteUsecase(
                   athleteRepository,
+                  bcryptService
                )),
             },
             {

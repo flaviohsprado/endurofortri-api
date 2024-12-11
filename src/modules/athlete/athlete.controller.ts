@@ -1,3 +1,4 @@
+import { Public } from "@/common/decorators/isPublicRoute.decorator";
 import { DeleteApiResponse } from "@/common/decorators/requests/deleteApiResponse.decorator";
 import { GetApiResponse } from "@/common/decorators/requests/getApiResponse.decorator";
 import { PostApiResponse } from "@/common/decorators/requests/postApiResponse.decorator";
@@ -33,6 +34,7 @@ export class AthleteController {
       return new AthletePresenter(athlete);
    }
 
+   @Public()
    @PostApiResponse(AthletePresenter)
    public async create(@Body() body: CreateAthleteDTO): Promise<AthletePresenter> {
       const createdAthlete = await this.createAthleteUsecase.getInstance().execute(body);

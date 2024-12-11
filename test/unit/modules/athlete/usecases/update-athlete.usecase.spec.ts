@@ -1,5 +1,6 @@
 import { AthleteRepository } from '@/modules/athlete/athlete.repository';
 import { UpdateAthleteUsecase } from '@/modules/athlete/usecases/update-athlete.usecase';
+import { BcryptService } from '@/services/bcrypt/bcrypt.service';
 import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { athleteMock, updateAthleteMock } from '../../../mock/athlete.mock';
@@ -7,6 +8,7 @@ import { athleteMock, updateAthleteMock } from '../../../mock/athlete.mock';
 describe('UpdateAthleteUsecase', () => {
    let updateAthleteUsecase: UpdateAthleteUsecase;
    let athleteRepository: AthleteRepository;
+   let bcryptService: BcryptService;
 
    beforeEach(async () => {
       const module: TestingModule = await Test.createTestingModule({
@@ -16,6 +18,14 @@ describe('UpdateAthleteUsecase', () => {
                provide: AthleteRepository,
                useValue: {
                   update: jest.fn(),
+                  findById: jest.fn(),
+                  alreadyExists: jest.fn(),
+               },
+            },
+            {
+               provide: BcryptService,
+               useValue: {
+                  createHash: jest.fn(),
                },
             },
             {
@@ -29,6 +39,7 @@ describe('UpdateAthleteUsecase', () => {
 
       updateAthleteUsecase = module.get<UpdateAthleteUsecase>(UpdateAthleteUsecase);
       athleteRepository = module.get<AthleteRepository>(AthleteRepository);
+      bcryptService = module.get<BcryptService>(BcryptService);
    });
 
    it('should be defined', () => {
@@ -39,6 +50,7 @@ describe('UpdateAthleteUsecase', () => {
       const id = '1';
 
       jest.spyOn(athleteRepository, 'update').mockResolvedValue(athleteMock);
+      jest.spyOn(bcryptService, 'createHash').mockResolvedValue('hashedPassword');
 
       const result = await updateAthleteUsecase.execute(id, updateAthleteMock);
 
@@ -51,6 +63,7 @@ describe('UpdateAthleteUsecase', () => {
 
       const loggerSpy = jest.spyOn(updateAthleteUsecase['logger'], 'log');
       jest.spyOn(athleteRepository, 'update').mockResolvedValue(athleteMock);
+      jest.spyOn(bcryptService, 'createHash').mockResolvedValue('hashedPassword');
 
       await updateAthleteUsecase.execute(id, updateAthleteMock);
 
