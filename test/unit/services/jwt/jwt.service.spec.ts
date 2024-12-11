@@ -26,15 +26,27 @@ describe('JwtTokenService', () => {
       expect(jwtService).toBeDefined();
    });
 
-   describe('checkToken', () => {
+   describe('verifyTokenAsync', () => {
       it('should return the result of jwtService.verifyAsync', async () => {
          const token = 'test-token';
          const verifyResult = { userId: '1' };
 
          jest.spyOn(jwtService, 'verifyAsync').mockResolvedValue(verifyResult);
 
-         expect(await service.checkToken(token)).toBe(verifyResult);
+         expect(await service.verifyTokenAsync(token)).toBe(verifyResult);
          expect(jwtService.verifyAsync).toHaveBeenCalledWith(token);
+      });
+   });
+
+   describe('verifyToken', () => {
+      it('should return the result of jwtService.verifyAsync', async () => {
+         const token = 'test-token';
+         const verifyResult = { userId: '1' };
+
+         jest.spyOn(jwtService, 'verify').mockReturnValue(verifyResult);
+
+         expect(await service.verifyToken(token)).toBe(verifyResult);
+         expect(jwtService.verify).toHaveBeenCalledWith(token);
       });
    });
 
@@ -46,7 +58,15 @@ describe('JwtTokenService', () => {
          jest.spyOn(jwtService, 'sign').mockReturnValue(signResult);
 
          expect(service.createToken(payload)).toBe(signResult);
-         expect(jwtService.sign).toHaveBeenCalledWith(payload);
+      });
+
+      it('should return the result of jwtService.sign with expiresIn', () => {
+         const payload = { id: '1', email: 'test@test.com', name: 'test' };
+         const signResult = 'test-token';
+
+         jest.spyOn(jwtService, 'sign').mockReturnValue(signResult);
+
+         expect(service.createToken(payload, '10m')).toBe(signResult);
       });
    });
 });

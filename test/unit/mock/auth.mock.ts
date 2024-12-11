@@ -14,3 +14,12 @@ export const authPresenter: AuthPresenter = {
    access_token: 'accessToken',
 };
 
+export const mockForgotPasswordData = {
+   email: 'test@example.com',
+};
+
+export const mockResetPasswordData = {
+   resetToken: 'valid-token',
+   newPassword: 'newPassword123',
+};
+

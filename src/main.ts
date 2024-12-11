@@ -20,9 +20,6 @@ async function bootstrap() {
       required: true,
     })
     .setVersion('1.0')
-    .addTag('Athlete')
-    .addTag('Shared Event')
-    .addTag('Event')
     .build();
   const document = SwaggerModule.createDocument(app, config);
 
