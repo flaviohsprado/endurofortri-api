@@ -16,7 +16,7 @@ export class UpdateAthleteUsecase {
    }
 
    public async execute(id: string, request: UpdateAthleteDTO): Promise<IAthlete> {
-      if (await this.repository.alreadyExists('email', request.email))
+      if (await this.repository.alreadyExists('email', request.email, id))
          throw new ForbiddenException({
             message: 'Email already exists in app!',
             statusCode: HttpStatus.FORBIDDEN,

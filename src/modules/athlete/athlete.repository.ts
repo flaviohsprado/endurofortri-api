@@ -41,8 +41,19 @@ export class AthleteRepository {
       }
    }
 
-   public async alreadyExists(key: string, value: string): Promise<boolean> {
-      const athlete = await this.repository.findOne({ where: { [key]: value } });
-      return !!athlete;
+   public async alreadyExists(
+      key: string,
+      value: string,
+      id?: string,
+   ): Promise<boolean> {
+      if (!value) return false;
+
+      const alreadyExists = await this.repository.findOne({
+         where: { [key]: value },
+      });
+
+      if (alreadyExists && alreadyExists.id !== id) return true;
+
+      return false;
    }
 }
