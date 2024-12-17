@@ -1,7 +1,10 @@
 import { EnvironmentConfigModule } from '@/common/config/environment-config/environment-config.module';
 import { CacheConfigModule } from '@/services/cache/cache.module';
 import { CacheService } from '@/services/cache/cache.service';
+import { StravaModule } from '@/services/strava/strava.module';
+import { StravaService } from '@/services/strava/strava.service';
 import { DynamicModule, Module } from '@nestjs/common';
+import { AthleteRepository } from '../athlete/athlete.repository';
 import { RepositoriesModule } from '../repository.module';
 import { UseCaseProxy } from '../usecase-proxy';
 import { ActivityRepository } from './activity.repository';
@@ -11,7 +14,7 @@ import { GetActivityUsecase } from './usecases/get-activity.usecase';
 import { UpdateActivityUsecase } from './usecases/update-activity.usecase';
 
 @Module({
-  imports: [EnvironmentConfigModule, RepositoriesModule, CacheConfigModule],
+  imports: [EnvironmentConfigModule, RepositoriesModule, CacheConfigModule, StravaModule],
 })
 export class ActivitiesModule {
   static GET_ACTIVITY_USECASES_PROXY = 'getActivityUsecasesProxy';
@@ -24,13 +27,15 @@ export class ActivitiesModule {
       module: ActivitiesModule,
       providers: [
         {
-          inject: [ActivityRepository, CacheService],
+          inject: [ActivityRepository, AthleteRepository, StravaService, CacheService],
           provide: ActivitiesModule.GET_ACTIVITY_USECASES_PROXY,
           useFactory: (
             repository: ActivityRepository,
+            athleteRepository: AthleteRepository,
+            stravaService: StravaService,
             cacheService: CacheService,
           ) =>
-            new UseCaseProxy(new GetActivityUsecase(repository, cacheService)),
+            new UseCaseProxy(new GetActivityUsecase(repository, athleteRepository, stravaService, cacheService)),
         },
         {
           inject: [ActivityRepository],

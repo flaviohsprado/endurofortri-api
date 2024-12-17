@@ -1,4 +1,4 @@
-import { IStravaActivity } from '@/interfaces/strava.inferface';
+import { IStravaActivity, IStravaToken } from '@/interfaces/strava.inferface';
 import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -12,23 +12,27 @@ export class StravaService {
     private readonly httpService: HttpService,
   ) { }
 
-  async getAthleteActivities(
+  async getActivities(
     access_token: string,
     after?: number,
     before?: number,
     page: number = 1,
-    perPage: number = 30,
+    perPage: number = 5,
   ): Promise<IStravaActivity[]> {
+    const defaultBefore = before ? before : Math.floor(new Date().getTime() / 1000);
+
     try {
+      const strava_token = await this.generateToken(access_token);
+
       const response = await this.httpService.axiosRef.get<IStravaActivity[]>(
         `${this.stravaApiUrl}/athlete/activities`,
         {
           headers: {
-            Authorization: `Bearer ${access_token}`,
+            Authorization: `Bearer ${strava_token.access_token}`,
           },
           params: {
             after,
-            before,
+            before: defaultBefore,
             page,
             per_page: perPage,
           },
@@ -69,6 +73,22 @@ export class StravaService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  private async generateToken(code: string) {
+    const { data } = await this.httpService.axiosRef.get<IStravaToken>(
+      `${this.stravaApiUrl}/oauth/token`,
+      {
+        params: {
+          client_id: this.configService.get('STRAVA_CLIENT_ID'),
+          client_secret: this.configService.get('STRAVA_CLIENT_SECRET'),
+          code: code,
+          grant_type: 'authorization_code',
+        },
+      },
+    );
+
+    return data;
   }
 
   async refreshToken(refreshToken: string) {

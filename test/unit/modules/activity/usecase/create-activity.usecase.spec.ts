@@ -1,5 +1,5 @@
-import { Activity } from '@/modules/activities/activity.entity';
 import { ActivityRepository } from '@/modules/activities/activity.repository';
+import { Activity } from '@/modules/activities/entities/activity.entity';
 import { CreateActivityUsecase } from '@/modules/activities/usecases/create-activity.usecase';
 import { Logger } from '@nestjs/common';
 import { Test } from '@nestjs/testing';

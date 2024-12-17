@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Activity } from './activity.entity';
+import { ActivityDTO } from './dto/activity.dto';
+import { Activity } from './entities/activity.entity';
 
 @Injectable()
 export class ActivityRepository {
@@ -10,14 +11,10 @@ export class ActivityRepository {
     private readonly repository: Repository<Activity>,
   ) { }
 
-  public async find(athleteId: string): Promise<Activity[]> {
+  public async findAllByAthleteId(athleteId: string): Promise<Activity[]> {
     return await this.repository.find({
-      where: {
-        athlete: {
-          id: athleteId,
-        },
-      },
-      relations: ['athlete'],
+      where: { athlete_id: athleteId },
+      relations: ['athlete', 'map'],
     });
   }
 
@@ -31,6 +28,17 @@ export class ActivityRepository {
   public async create(activity: Partial<Activity>): Promise<Activity> {
     const newActivity = this.repository.create(activity);
     return this.repository.save(newActivity);
+  }
+
+  public async createMany(activities: ActivityDTO[]): Promise<void> {
+    const newActivities = this.repository.create(activities);
+    await this.repository.save(newActivities);
+  }
+
+  public async findByStravaId(stravaId: number): Promise<Activity> {
+    return await this.repository.findOne({
+      where: { strava_id: stravaId },
+    });
   }
 
   public async update(

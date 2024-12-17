@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Activity } from '../activity.entity';
 import { ActivityRepository } from '../activity.repository';
+import { Activity } from '../entities/activity.entity';
 
 @Injectable()
 export class CreateActivityUsecase {

@@ -1,6 +1,6 @@
 import { ActivitiesController } from '@/modules/activities/activity.controller';
-import { Activity } from '@/modules/activities/activity.entity';
 import { ActivitiesModule } from '@/modules/activities/activity.module';
+import { Activity } from '@/modules/activities/entities/activity.entity';
 import { CreateActivityUsecase } from '@/modules/activities/usecases/create-activity.usecase';
 import { DeleteActivityUsecase } from '@/modules/activities/usecases/delete-activity.usecase';
 import { GetActivityUsecase } from '@/modules/activities/usecases/get-activity.usecase';

@@ -5,8 +5,8 @@ import { PutApiResponse } from '@/common/decorators/requests/putApiResponse.deco
 import { Body, Controller, Inject, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UseCaseProxy } from '../usecase-proxy';
-import { Activity } from './activity.entity';
 import { ActivitiesModule } from './activity.module';
+import { Activity } from './entities/activity.entity';
 import { CreateActivityUsecase } from './usecases/create-activity.usecase';
 import { DeleteActivityUsecase } from './usecases/delete-activity.usecase';
 import { GetActivityUsecase } from './usecases/get-activity.usecase';

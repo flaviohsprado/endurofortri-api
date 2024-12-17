@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Activity } from '../../../../src/modules/activities/activity.entity';
 import { ActivityRepository } from '../../../../src/modules/activities/activity.repository';
+import { Activity } from '../../../../src/modules/activities/entities/activity.entity';
 
 describe('ActivityRepository', () => {
    let activityRepository: ActivityRepository;
