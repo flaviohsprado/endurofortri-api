@@ -1,68 +1,70 @@
-import { IsOptionalBoolean } from "@/common/decorators/validators/isOptionalBoolean.decorator"
-import { IsOptionalNumber } from "@/common/decorators/validators/isOptionalNumber.decorator"
-import { IsOptionalObject } from "@/common/decorators/validators/isOptionalObject.decorator"
-import { IsOptionalString } from "@/common/decorators/validators/isOptionalString.decorator"
-import { IsRequiredNumber } from "@/common/decorators/validators/isRequiredNumber.decorator"
-import { ActivityDTO, ResourceStateDTO } from "./activity.dto"
+import { ApiProperty } from "@nestjs/swagger"
 
 export class LapDTO {
-   @IsRequiredNumber()
-   public id: number
-
-   @IsOptionalNumber()
+   @ApiProperty()
+   public id?: string
+   @ApiProperty()
+   public strava_id: number
+   @ApiProperty()
+   public activity_id: string
+   @ApiProperty()
+   public strava_activity_id: number
+   @ApiProperty()
    public resource_state: number
-
-   @IsOptionalString()
+   @ApiProperty()
    public name: string
-
-   @IsOptionalObject({ type: ActivityDTO })
-   public activity: ActivityDTO
-
-   @IsOptionalObject({ type: ResourceStateDTO })
-   public athlete: ResourceStateDTO
-
-   @IsOptionalNumber()
+   @ApiProperty()
    public elapsed_time: number
-
-   @IsOptionalNumber()
+   @ApiProperty()
    public moving_time: number
-
-   @IsOptionalString()
+   @ApiProperty()
    public start_date: string
-
-   @IsOptionalString()
+   @ApiProperty()
    public start_date_local: string
-
-   @IsOptionalNumber()
+   @ApiProperty()
    public distance: number
-
-   @IsOptionalNumber()
+   @ApiProperty()
    public start_index: number
-
-   @IsOptionalNumber()
+   @ApiProperty()
    public end_index: number
-
-   @IsOptionalNumber()
+   @ApiProperty()
    public total_elevation_gain: number
-
-   @IsOptionalNumber()
+   @ApiProperty()
    public average_speed: number
-
-   @IsOptionalNumber()
+   @ApiProperty()
    public max_speed: number
-
-   @IsOptionalNumber()
+   @ApiProperty()
    public average_cadence: number
-
-   @IsOptionalBoolean()
+   @ApiProperty()
    public device_watts: boolean
-
-   @IsOptionalNumber()
+   @ApiProperty()
    public average_watts: number
-
-   @IsOptionalNumber()
+   @ApiProperty()
    public lap_index: number
-
-   @IsOptionalNumber()
+   @ApiProperty()
    public split: number
+
+   constructor(lap: LapDTO) {
+      this.id = lap.id
+      this.strava_id = lap.strava_id
+      this.activity_id = lap.activity_id
+      this.strava_activity_id = lap.strava_activity_id
+      this.resource_state = lap.resource_state
+      this.name = lap.name
+      this.elapsed_time = lap.elapsed_time
+      this.moving_time = lap.moving_time
+      this.start_date = lap.start_date
+      this.start_date_local = lap.start_date_local
+      this.distance = lap.distance
+      this.start_index = lap.start_index
+      this.end_index = lap.end_index
+      this.total_elevation_gain = lap.total_elevation_gain
+      this.average_speed = lap.average_speed
+      this.max_speed = lap.max_speed
+      this.average_cadence = lap.average_cadence
+      this.device_watts = lap.device_watts
+      this.average_watts = lap.average_watts
+      this.lap_index = lap.lap_index
+      this.split = lap.split
+   }
 }

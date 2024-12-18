@@ -7,9 +7,11 @@ import { ApiTags } from '@nestjs/swagger';
 import { UseCaseProxy } from '../usecase-proxy';
 import { ActivitiesModule } from './activity.module';
 import { ActivityPresenter } from './dto/activity.presenter';
+import { LapPresenter } from './dto/lap.presenter';
 import { Activity } from './entities/activity.entity';
 import { CreateActivityUsecase } from './usecases/create-activity.usecase';
 import { DeleteActivityUsecase } from './usecases/delete-activity.usecase';
+import { GetActivityLapUsecase } from './usecases/get-activity-lap.usecase';
 import { GetActivityUsecase } from './usecases/get-activity.usecase';
 import { UpdateActivityUsecase } from './usecases/update-activity.usecase';
 
@@ -25,6 +27,8 @@ export class ActivitiesController {
     private readonly updateActivityUsecase: UseCaseProxy<UpdateActivityUsecase>,
     @Inject(ActivitiesModule.DELETE_ACTIVITY_USECASES_PROXY)
     private readonly deleteActivityUsecase: UseCaseProxy<DeleteActivityUsecase>,
+    @Inject(ActivitiesModule.GET_ACTIVITY_LAP_USECASES_PROXY)
+    private readonly getActivityLapUsecase: UseCaseProxy<GetActivityLapUsecase>,
   ) { }
 
   @GetApiResponse(ActivityPresenter, '/:athleteId', true)
@@ -51,6 +55,14 @@ export class ActivitiesController {
     @Body() activity: Partial<Activity>,
   ): Promise<Activity> {
     return await this.updateActivityUsecase.getInstance().execute(id, activity);
+  }
+
+  @GetApiResponse(LapPresenter, '/:id/laps', true)
+  public async getLaps(
+    @Param('id') id: string,
+  ): Promise<LapPresenter[]> {
+    const laps = await this.getActivityLapUsecase.getInstance().execute(id);
+    return laps.map(lap => new LapPresenter(id, lap));
   }
 
   @DeleteApiResponse('/:id')

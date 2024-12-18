@@ -85,6 +85,39 @@ export interface IStravaRefreshToken {
   refresh_token: string
 }
 
+export interface IStravaLap {
+  id: number
+  resource_state: number
+  name: string
+  activity: ActivityLap
+  athlete: AthleteLap
+  elapsed_time: number
+  moving_time: number
+  start_date: string
+  start_date_local: string
+  distance: number
+  start_index: number
+  end_index: number
+  total_elevation_gain: number
+  average_speed: number
+  max_speed: number
+  average_cadence: number
+  device_watts: boolean
+  average_watts: number
+  lap_index: number
+  split: number
+}
+
+export interface ActivityLap {
+  id: number
+  resource_state: number
+}
+
+export interface AthleteLap {
+  id: number
+  resource_state: number
+}
+
 export interface Athlete {
   id: number
   username: any

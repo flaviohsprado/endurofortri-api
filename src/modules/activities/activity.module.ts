@@ -10,6 +10,7 @@ import { UseCaseProxy } from '../usecase-proxy';
 import { ActivityRepository } from './activity.repository';
 import { CreateActivityUsecase } from './usecases/create-activity.usecase';
 import { DeleteActivityUsecase } from './usecases/delete-activity.usecase';
+import { GetActivityLapUsecase } from './usecases/get-activity-lap.usecase';
 import { GetActivityUsecase } from './usecases/get-activity.usecase';
 import { UpdateActivityUsecase } from './usecases/update-activity.usecase';
 
@@ -21,6 +22,7 @@ export class ActivitiesModule {
   static CREATE_ACTIVITY_USECASES_PROXY = 'createActivityUsecasesProxy';
   static UPDATE_ACTIVITY_USECASES_PROXY = 'updateActivityUsecasesProxy';
   static DELETE_ACTIVITY_USECASES_PROXY = 'deleteActivityUsecasesProxy';
+  static GET_ACTIVITY_LAP_USECASES_PROXY = 'getActivityLapUsecasesProxy';
 
   static register(): DynamicModule {
     return {
@@ -55,12 +57,19 @@ export class ActivitiesModule {
           useFactory: (repository: ActivityRepository) =>
             new UseCaseProxy(new DeleteActivityUsecase(repository)),
         },
+        {
+          inject: [ActivityRepository, CacheService, StravaService],
+          provide: ActivitiesModule.GET_ACTIVITY_LAP_USECASES_PROXY,
+          useFactory: (repository: ActivityRepository, cacheService: CacheService, stravaService: StravaService) =>
+            new UseCaseProxy(new GetActivityLapUsecase(repository, cacheService, stravaService)),
+        },
       ],
       exports: [
         ActivitiesModule.GET_ACTIVITY_USECASES_PROXY,
         ActivitiesModule.CREATE_ACTIVITY_USECASES_PROXY,
         ActivitiesModule.UPDATE_ACTIVITY_USECASES_PROXY,
         ActivitiesModule.DELETE_ACTIVITY_USECASES_PROXY,
+        ActivitiesModule.GET_ACTIVITY_LAP_USECASES_PROXY,
       ],
     };
   }

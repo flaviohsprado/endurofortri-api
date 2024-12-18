@@ -2,13 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ActivityDTO } from './dto/activity.dto';
+import { LapDTO } from './dto/lap.dto';
 import { Activity } from './entities/activity.entity';
+import { Lap } from './entities/lap.entity';
 
 @Injectable()
 export class ActivityRepository {
   constructor(
     @InjectRepository(Activity)
     private readonly repository: Repository<Activity>,
+    @InjectRepository(Lap)
+    private readonly lapRepository: Repository<Lap>,
   ) { }
 
   public async findAllByAthleteId(athleteId: string): Promise<Activity[]> {
@@ -25,6 +29,12 @@ export class ActivityRepository {
     });
   }
 
+  public async findLapsByActivityId(id: string): Promise<Lap[]> {
+    return await this.lapRepository.find({
+      where: { activity_id: id },
+    });
+  }
+
   public async create(activity: Partial<Activity>): Promise<Activity> {
     const newActivity = this.repository.create(activity);
     return this.repository.save(newActivity);
@@ -33,6 +43,11 @@ export class ActivityRepository {
   public async createMany(activities: ActivityDTO[]): Promise<void> {
     const newActivities = this.repository.create(activities);
     await this.repository.save(newActivities);
+  }
+
+  public async createManyLaps(laps: LapDTO[]): Promise<void> {
+    const newLaps = this.lapRepository.create(laps);
+    await this.lapRepository.save(newLaps);
   }
 
   public async findByStravaId(stravaId: number): Promise<Activity> {

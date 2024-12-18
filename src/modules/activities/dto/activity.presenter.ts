@@ -130,7 +130,7 @@ export class ActivityPresenter {
    @ApiProperty()
    has_kudoed: boolean
    @ApiProperty()
-   rep: number
+   rpe: number
    @ApiProperty()
    feel: number
    @ApiProperty({ type: AthletePresenter })

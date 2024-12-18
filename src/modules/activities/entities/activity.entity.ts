@@ -181,7 +181,7 @@ export class Activity {
   public has_kudoed: boolean
 
   @IsOptionalNumberColumn()
-  public rep: number
+  public rpe: number
 
   @IsOptionalNumberColumn()
   public feel: number
