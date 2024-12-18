@@ -6,6 +6,7 @@ import { Body, Controller, Inject, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UseCaseProxy } from '../usecase-proxy';
 import { ActivitiesModule } from './activity.module';
+import { ActivityPresenter } from './dto/activity.presenter';
 import { Activity } from './entities/activity.entity';
 import { CreateActivityUsecase } from './usecases/create-activity.usecase';
 import { DeleteActivityUsecase } from './usecases/delete-activity.usecase';
@@ -26,11 +27,13 @@ export class ActivitiesController {
     private readonly deleteActivityUsecase: UseCaseProxy<DeleteActivityUsecase>,
   ) { }
 
-  @GetApiResponse(Activity, '/:athleteId')
+  @GetApiResponse(ActivityPresenter, '/:athleteId', true)
   public async getActivities(
     @Param('athleteId') athleteId: string,
-  ): Promise<Activity[]> {
-    return await this.getActivityUsecase.getInstance().execute(athleteId);
+  ): Promise<ActivityPresenter[]> {
+    const activities = await this.getActivityUsecase.getInstance().execute(athleteId);
+
+    return activities.map(activity => new ActivityPresenter(activity));
   }
 
   @PostApiResponse(Activity, '/:athleteId')

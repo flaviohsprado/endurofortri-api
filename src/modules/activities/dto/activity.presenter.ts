@@ -1,61 +1,148 @@
-import { FieldId, GearType } from "@/enums/gear.enum"
+import { AthletePresenter } from "@/modules/athlete/dto/athlete.presenter"
 import { ApiProperty } from "@nestjs/swagger"
 
-export class ActivityFilterPresenter {
+export class MapPresenter {
    @ApiProperty()
-   public id: string
+   id?: string
    @ApiProperty()
-   public field_id: FieldId
+   activity_id?: any
    @ApiProperty()
-   public code: string
+   polyline?: any
    @ApiProperty()
-   public operator: string
+   resource_state?: number
    @ApiProperty()
-   public value: object
+   summary_polyline?: string
+
+   constructor(map: MapPresenter) {
+      Object.assign(this, map);
+   }
 }
 
-export class GearPresenter {
+export class ActivityPresenter {
    @ApiProperty()
-   public id: string
+   id?: string
    @ApiProperty()
-   public athlete_id: string
-   @ApiProperty({ enum: GearType })
-   public type: GearType
+   athlete_id: string
    @ApiProperty()
-   public name: string
+   strava_id: number
    @ApiProperty()
-   public purchased: string
+   resource_state: number
    @ApiProperty()
-   public notes: string
+   name: string
    @ApiProperty()
-   public distance: number
+   distance: number
    @ApiProperty()
-   public time: number
+   moving_time: number
    @ApiProperty()
-   public activities: number
+   elapsed_time: number
    @ApiProperty()
-   public use_elapsed_time: boolean
+   total_elevation_gain: number
    @ApiProperty()
-   public retired: string
+   type: string
    @ApiProperty()
-   public component_ids: string[]
+   sport_type: string
    @ApiProperty()
-   public component: boolean
+   workout_type: any
+   @ApiProperty()
+   start_date: string
+   @ApiProperty()
+   start_date_local: string
+   @ApiProperty()
+   timezone: string
+   @ApiProperty()
+   utc_offset: number
+   @ApiProperty()
+   location_city: any
+   @ApiProperty()
+   location_state: any
+   @ApiProperty()
+   location_country: any
+   @ApiProperty()
+   achievement_count: number
+   @ApiProperty()
+   kudos_count: number
+   @ApiProperty()
+   comment_count: number
+   @ApiProperty()
+   athlete_count: number
+   @ApiProperty()
+   photo_count: number
+   @ApiProperty()
+   trainer: boolean
+   @ApiProperty()
+   commute: boolean
+   @ApiProperty()
+   manual: boolean
+   @ApiProperty()
+   private: boolean
+   @ApiProperty()
+   visibility: string
+   @ApiProperty()
+   flagged: boolean
+   @ApiProperty()
+   gear_id: any
+   @ApiProperty()
+   start_latlng: number[]
+   @ApiProperty()
+   end_latlng: number[]
+   @ApiProperty()
+   average_speed: number
+   @ApiProperty()
+   max_speed: number
+   @ApiProperty()
+   average_cadence: number
+   @ApiProperty()
+   average_watts?: number
+   @ApiProperty()
+   max_watts?: number
+   @ApiProperty()
+   weighted_average_watts?: number
+   @ApiProperty()
+   device_watts: boolean
+   @ApiProperty()
+   kilojoules?: number
+   @ApiProperty()
+   has_heartrate: boolean
+   @ApiProperty()
+   average_heartrate: number
+   @ApiProperty()
+   max_heartrate: number
+   @ApiProperty()
+   heartrate_opt_out: boolean
+   @ApiProperty()
+   display_hide_heartrate_option: boolean
+   @ApiProperty()
+   elev_high: number
+   @ApiProperty()
+   elev_low: number
+   @ApiProperty()
+   upload_id: number
+   @ApiProperty()
+   upload_id_str: string
+   @ApiProperty()
+   external_id: string
+   @ApiProperty()
+   from_accepted_tag: boolean
+   @ApiProperty()
+   pr_count: number
+   @ApiProperty()
+   total_photo_count: number
+   @ApiProperty()
+   has_kudoed: boolean
+   @ApiProperty()
+   rep: number
+   @ApiProperty()
+   feel: number
+   @ApiProperty({ type: AthletePresenter })
+   athlete: AthletePresenter
+   @ApiProperty({ type: MapPresenter })
+   map: MapPresenter
 
-   constructor(props: GearPresenter) {
-      this.id = props.id
-      this.athlete_id = props.athlete_id
-      this.type = props.type
-      this.name = props.name
-      this.purchased = props.purchased
-      this.notes = props.notes
-      this.distance = props.distance
-      this.time = props.time
-      this.activities = props.activities
-      this.use_elapsed_time = props.use_elapsed_time
-      this.retired = props.retired
-      this.component_ids = props.component_ids
-      this.component = props.component
+   constructor(activity: ActivityPresenter) {
+      const { athlete, map, ...rest } = activity;
+      Object.assign(this, rest);
+      this.athlete = new AthletePresenter(athlete);
+      this.map = new MapPresenter(map);
    }
 }
 
