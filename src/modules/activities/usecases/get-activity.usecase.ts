@@ -25,7 +25,7 @@ export class GetActivityUsecase {
     this.logger.log(`Getting activities for athlete ${athleteId}`);
 
     const cacheKey = `activities:${athleteId}`;
-    const cachedActivities = await this.cacheService.getCachedObject(cacheKey);
+    const cachedActivities = await this.cacheService.getCachedObject<Activity[]>(cacheKey);
 
     if (cachedActivities) {
       this.logger.log(`Returning cached activities for athlete ${athleteId}`);
@@ -33,7 +33,7 @@ export class GetActivityUsecase {
     }
 
     const athlete = await this.athleteRepository.findById(athleteId);
-    const stravaActivities = await this.stravaService.getActivities(athlete.strava_access_token);
+    const stravaActivities = await this.stravaService.getActivities(athlete.id, athlete.strava_access_token);
 
     await this.saveAndMergeActivities(athlete, stravaActivities);
 

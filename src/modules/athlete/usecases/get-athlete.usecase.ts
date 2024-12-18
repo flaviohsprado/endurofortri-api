@@ -16,7 +16,7 @@ export class GetAthleteUsecase {
    public async execute(id?: string): Promise<IAthlete> {
       this.logger.log(`Getting athlete event with id: ${id}`);
 
-      const cachedAthlete = await this.cache.getCachedObject(`athlete:${id}`);
+      const cachedAthlete = await this.cache.getCachedObject<IAthlete>(`athlete:${id}`);
 
       if (cachedAthlete) {
          this.logger.log(`Athlete with id: ${id} found in cache`);

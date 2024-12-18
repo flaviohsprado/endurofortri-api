@@ -1,5 +1,6 @@
+import { CacheInterceptor } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { PassportModule } from '@nestjs/passport';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { TransformResponseInterceptor } from './common/interceptors/transformResponse.interceptor';
@@ -34,6 +35,10 @@ import { AuthModule } from './modules/auth/auth.module';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
     },
   ],
 })
