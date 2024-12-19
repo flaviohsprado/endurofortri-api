@@ -2,7 +2,6 @@ import { EnvironmentConfigModule } from "@/common/config/environment-config/envi
 import { BcryptModule } from "@/services/bcrypt/bcrypt.module";
 import { BcryptService } from "@/services/bcrypt/bcrypt.service";
 import { CacheConfigModule } from "@/services/cache/cache.module";
-import { CacheService } from "@/services/cache/cache.service";
 import { JwtConfigModule } from "@/services/jwt/jwt.module";
 import { JwtTokenService } from "@/services/jwt/jwt.service";
 import { DynamicModule, Module } from "@nestjs/common";
@@ -34,14 +33,13 @@ export class AthleteModule {
          module: AthleteModule,
          providers: [
             {
-               inject: [AthleteRepository, CacheService],
+               inject: [AthleteRepository],
                provide: AthleteModule.GET_ATHLETE_USECASES_PROXY,
                useFactory: (
                   repository: AthleteRepository,
-                  cacheService: CacheService,
                ) =>
                   new UseCaseProxy(
-                     new GetAthleteUsecase(repository, cacheService),
+                     new GetAthleteUsecase(repository),
                   ),
             },
             {

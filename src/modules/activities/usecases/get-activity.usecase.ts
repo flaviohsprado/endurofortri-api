@@ -21,8 +21,11 @@ export class GetActivityUsecase {
     this.logger = new Logger(GetActivityUsecase.name);
   }
 
-  public async execute(athleteId: string): Promise<Activity[]> {
+  public async execute(athleteId: string, start: Date, end: Date): Promise<Activity[]> {
     this.logger.log(`Getting activities for athlete ${athleteId}`);
+
+    const startDate = new Date(start);
+    const endDate = new Date(end);
 
     const cacheKey = `activities:${athleteId}`;
     const cachedActivities = await this.cacheService.getCachedObject<Activity[]>(cacheKey);
@@ -33,20 +36,25 @@ export class GetActivityUsecase {
     }
 
     const athlete = await this.athleteRepository.findById(athleteId);
-    const stravaActivities = await this.stravaService.getActivities(athlete.id, athlete.strava_access_token);
+    const stravaActivities = await this.stravaService.getActivities(
+      athlete.id,
+      athlete.strava_access_token,
+      startDate,
+      endDate
+    );
 
-    await this.saveAndMergeActivities(athlete, stravaActivities);
+    await this.saveAndMergeActivities(athlete, stravaActivities, startDate);
 
-    const activities = await this.repository.findAllByAthleteId(athleteId);
+    const activities = await this.repository.findAllByAthleteId(athleteId, startDate);
 
     await this.cacheService.setObjectInCache(cacheKey, activities);
 
     return activities;
   }
 
-  private async saveAndMergeActivities(athlete: Athlete, activities: IStravaActivity[]): Promise<void> {
+  private async saveAndMergeActivities(athlete: Athlete, activities: IStravaActivity[], startDate: Date): Promise<void> {
     // Get all existing activities from database to compare
-    const existingActivities = await this.repository.findAllByAthleteId(athlete.id);
+    const existingActivities = await this.repository.findAllByAthleteId(athlete.id, startDate);
     const existingStravaIds = new Set(existingActivities.map(activity => activity.strava_id));
 
     // Filter out activities that already exist in the database

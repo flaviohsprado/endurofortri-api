@@ -2,7 +2,7 @@ import { DeleteApiResponse } from '@/common/decorators/requests/deleteApiRespons
 import { GetApiResponse } from '@/common/decorators/requests/getApiResponse.decorator';
 import { PostApiResponse } from '@/common/decorators/requests/postApiResponse.decorator';
 import { PutApiResponse } from '@/common/decorators/requests/putApiResponse.decorator';
-import { Body, Controller, Inject, Param } from '@nestjs/common';
+import { Body, Controller, Inject, Param, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UseCaseProxy } from '../usecase-proxy';
 import { ActivitiesModule } from './activity.module';
@@ -34,8 +34,10 @@ export class ActivitiesController {
   @GetApiResponse(ActivityPresenter, '/:athleteId', true)
   public async getActivities(
     @Param('athleteId') athleteId: string,
+    @Query('startDate') startDate: Date,
+    @Query('endDate') endDate: Date,
   ): Promise<ActivityPresenter[]> {
-    const activities = await this.getActivityUsecase.getInstance().execute(athleteId);
+    const activities = await this.getActivityUsecase.getInstance().execute(athleteId, startDate, endDate);
 
     return activities.map(activity => new ActivityPresenter(activity));
   }

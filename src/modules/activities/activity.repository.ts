@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { ActivityDTO } from './dto/activity.dto';
 import { LapDTO } from './dto/lap.dto';
 import { Activity } from './entities/activity.entity';
@@ -15,9 +15,12 @@ export class ActivityRepository {
     private readonly lapRepository: Repository<Lap>,
   ) { }
 
-  public async findAllByAthleteId(athleteId: string): Promise<Activity[]> {
+  public async findAllByAthleteId(athleteId: string, startDate: Date): Promise<Activity[]> {
     return await this.repository.find({
-      where: { athlete_id: athleteId },
+      where: {
+        athlete_id: athleteId,
+        start_date: MoreThan(startDate.toISOString()),
+      },
       relations: ['athlete', 'map'],
     });
   }

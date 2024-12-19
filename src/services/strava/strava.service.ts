@@ -17,12 +17,13 @@ export class StravaService {
   public async getActivities(
     athleteId: string,
     access_token: string,
-    after?: number,
-    before?: number,
+    startDate?: Date,
+    endDate?: Date,
     page: number = 1,
     perPage: number = 5,
   ): Promise<IStravaActivity[]> {
-    const defaultBefore = before ? before : Math.floor(new Date().getTime() / 1000);
+    const defaultBefore = endDate ? Math.floor(endDate.getTime() / 1000) : Math.floor(new Date().getTime() / 1000);
+    const defaultAfter = startDate ? Math.floor(startDate.getTime() / 1000) : 0;
 
     try {
       const stravaAccessToken = await this.getAccessToken(athleteId, access_token);
@@ -34,7 +35,7 @@ export class StravaService {
             Authorization: `Bearer ${stravaAccessToken}`,
           },
           params: {
-            after,
+            after: defaultAfter,
             before: defaultBefore,
             page,
             per_page: perPage,
